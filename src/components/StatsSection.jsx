@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Card } from './ui/card';
 
 function CountUp({ target, suffix = '' }) {
   const [count, setCount] = useState(0);
@@ -35,41 +36,28 @@ const stats = [
 
 export default function StatsSection() {
   return (
-    <section style={{
-      padding: '80px 0',
-      backgroundColor: 'var(--color-surface)',
-      position: 'relative', overflow: 'hidden',
-    }}>
-      <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        backgroundImage: `radial-gradient(var(--dot-color) 1px, transparent 1px)`,
-        backgroundSize: '30px 30px',
-      }} />
+    <section className="py-20 bg-[var(--color-surface)] relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ backgroundImage: 'radial-gradient(var(--dot-color) 1px, transparent 1px)', backgroundSize: '30px 30px' }}
+      />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold mb-3" style={{ color: 'var(--color-text-heading)' }}>
+        <div className="text-center mb-14">
+          <h2 className="font-display text-3xl sm:text-4xl font-bold mb-3 text-[var(--color-text-heading)]">
             Better Strategy With Quality Business
           </h2>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: 17 }}>Numbers that speak to our commitment and excellence</p>
+          <p className="text-[var(--color-text-muted)] text-[17px]">Numbers that speak to our commitment and excellence</p>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat) => (
-            <div key={stat.label} style={{
-              textAlign: 'center',
-              backgroundColor: 'var(--color-surface-2)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 16, padding: 24,
-              transition: 'all 0.2s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--color-border-hover)'; e.currentTarget.style.backgroundColor = 'var(--color-surface-3)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.backgroundColor = 'var(--color-surface-2)'; }}
+            <Card key={stat.label}
+              className="p-6 text-center bg-[var(--color-surface-2)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-3)]"
             >
-              <div style={{ fontSize: 28, marginBottom: 8 }}>{stat.icon}</div>
-              <div className="font-display text-4xl font-bold mb-1" style={{ color: 'var(--color-text-heading)' }}>
+              <div className="text-[28px] mb-2">{stat.icon}</div>
+              <div className="font-display text-4xl font-bold mb-1 text-[var(--color-text-heading)]">
                 <CountUp target={stat.value} suffix={stat.suffix} />
               </div>
-              <div style={{ color: 'var(--color-text-muted)', fontSize: 13, fontWeight: 500 }}>{stat.label}</div>
-            </div>
+              <div className="text-[var(--color-text-muted)] text-[13px] font-medium">{stat.label}</div>
+            </Card>
           ))}
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { Button } from './ui/button';
 
 const services = [
   { name: 'Mechanical', path: '/services/mechanical', icon: '⚙️' },
@@ -35,129 +37,91 @@ export default function Navbar() {
   const handleMouseLeave = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 150); };
 
   return (
-    <header style={{
-      position: 'sticky', top: 0, zIndex: 50,
-      transition: 'box-shadow 0.4s ease',
-      backgroundColor: '#000000',
-      boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.4)' : 'none',
-    }}>
+    <header className={`sticky top-0 z-50 bg-black transition-shadow duration-300 ${scrolled ? 'shadow-[0_4px_24px_rgba(0,0,0,0.4)]' : 'shadow-none'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group" style={{ textDecoration: 'none' }}>
-            <div style={{
-              width: 36, height: 36, borderRadius: 10,
-              background: 'var(--color-surface-2)',
-              border: '1px solid var(--color-border-hover)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <span style={{ color: 'var(--color-text-heading)', fontWeight: 800, fontSize: 18 }}>Z</span>
+          <Link to="/" className="flex items-center gap-2 no-underline">
+            <div className="w-9 h-9 bg-[var(--color-surface-2)] border border-[var(--color-border-hover)] flex items-center justify-center">
+              <span className="text-[var(--color-text-heading)] font-extrabold text-lg">Z</span>
             </div>
-            <span style={{ color: 'var(--color-text-heading)', fontWeight: 700, fontSize: 20, letterSpacing: '-0.02em' }}>
+            <span className="text-[var(--color-text-heading)] font-bold text-xl tracking-[-0.02em]">
               ZenEdify
             </span>
           </Link>
 
-
-          {/* Desktop Nav + CTA */}
+          {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1 ml-auto">
             {navLinks.map((link) =>
               link.hasDropdown ? (
                 <div key={link.name} className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                  <button style={{
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '8px 16px', borderRadius: 8, fontSize: 14, fontWeight: 500,
-                    border: 'none', cursor: 'pointer', transition: 'all 0.15s',
-                    backgroundColor: location.pathname.startsWith('/services') ? 'var(--color-surface-2)' : 'transparent',
-                    color: location.pathname.startsWith('/services') ? 'var(--color-text-heading)' : 'var(--color-text-muted)',
-                  }}>Services</button>
-                  <div style={{
-                    position: 'absolute', top: '100%', left: 0, marginTop: 4,
-                    width: 224,
-                    backgroundColor: 'var(--color-surface)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: 16, overflow: 'hidden',
-                    boxShadow: 'var(--shadow-lg)',
-                    transition: 'all 0.2s',
-                    opacity: dropdownOpen ? 1 : 0,
-                    transform: dropdownOpen ? 'translateY(0)' : 'translateY(-8px)',
-                    pointerEvents: dropdownOpen ? 'auto' : 'none',
-                  }}>
-                    <div style={{ padding: 8 }}>
+                  <button className={`flex items-center gap-1 px-4 py-2 text-sm font-medium border-none cursor-pointer transition-all duration-150 ${
+                    location.pathname.startsWith('/services')
+                      ? 'bg-[var(--color-surface-2)] text-[var(--color-text-heading)]'
+                      : 'bg-transparent text-[var(--color-text-muted)]'
+                  }`}>
+                    Services <ChevronDown className="w-3 h-3" />
+                  </button>
+                  <div className={`absolute top-full left-0 mt-1 w-56 bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden shadow-[var(--shadow-lg)] transition-all duration-200 ${
+                    dropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                  }`}>
+                    <div className="p-2">
                       {services.map((service) => (
-                        <Link key={service.name} to={service.path} onClick={() => setDropdownOpen(false)} style={{
-                          display: 'flex', alignItems: 'center', gap: 12,
-                          padding: '10px 12px', borderRadius: 10, fontSize: 14,
-                          color: 'var(--color-text)', textDecoration: 'none',
-                          transition: 'all 0.15s',
-                        }}
-                          onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--color-surface-2)'; e.currentTarget.style.color = 'var(--color-text-heading)'; }}
-                          onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--color-text)'; }}
+                        <Link key={service.name} to={service.path} onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-3 px-3 py-2.5 text-sm text-[var(--color-text)] no-underline transition-all duration-150 hover:bg-[var(--color-surface-2)] hover:text-[var(--color-text-heading)]"
                         >
                           <span>{service.icon}</span>
-                          <span style={{ fontWeight: 500 }}>{service.name}</span>
+                          <span className="font-medium">{service.name}</span>
                         </Link>
                       ))}
                     </div>
                   </div>
                 </div>
               ) : (
-                <Link key={link.name} to={link.path} style={{
-                  padding: '8px 16px', borderRadius: 8, fontSize: 14, fontWeight: 500,
-                  textDecoration: 'none', transition: 'all 0.15s',
-                  backgroundColor: location.pathname === link.path ? 'var(--color-surface-2)' : 'transparent',
-                  color: location.pathname === link.path ? 'var(--color-text-heading)' : 'var(--color-text-muted)',
-                }}>
+                <Link key={link.name} to={link.path}
+                  className={`px-4 py-2 text-sm font-medium no-underline transition-all duration-150 ${
+                    location.pathname === link.path
+                      ? 'bg-[var(--color-surface-2)] text-[var(--color-text-heading)]'
+                      : 'bg-transparent text-[var(--color-text-muted)]'
+                  }`}
+                >
                   {link.name}
                 </Link>
               )
             )}
-            <Link to="/contact" style={{
-              padding: '8px 20px', borderRadius: 10, fontSize: 14, fontWeight: 600,
-              marginLeft: 12,
-              backgroundColor: 'var(--color-btn-primary-bg)',
-              color: 'var(--color-btn-primary-text)',
-              textDecoration: 'none', transition: 'all 0.2s',
-              boxShadow: '0 2px 8px rgba(255,255,255,0.15)',
-            }}>
-              Hire Expert
-            </Link>
+            <Button asChild size="sm" className="ml-3">
+              <Link to="/contact">Hire Expert</Link>
+            </Button>
           </div>
 
           {/* Mobile toggle */}
-          <button
-            className="lg:hidden"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden ml-auto"
             onClick={() => setMobileOpen(!mobileOpen)}
-            style={{ padding: 8, borderRadius: 8, border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: 'var(--color-text-muted)' }}
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              {mobileOpen
-                ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                : <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />}
-            </svg>
-          </button>
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </Button>
         </div>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '8px 16px 16px', backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
+        <div className="border-t border-white/[0.08] px-4 pb-4 pt-2 bg-black/60 backdrop-blur-2xl">
           {navLinks.map((link) => (
             <div key={link.name}>
-              <Link to={link.path} onClick={() => setMobileOpen(false)} style={{
-                display: 'block', padding: '10px 16px', borderRadius: 10, fontSize: 14,
-                fontWeight: 500, color: 'var(--color-text)', textDecoration: 'none',
-              }}>
+              <Link to={link.path} onClick={() => setMobileOpen(false)}
+                className="block px-4 py-2.5 text-sm font-medium text-[var(--color-text)] no-underline"
+              >
                 {link.name}
               </Link>
               {link.hasDropdown && (
-                <div style={{ marginLeft: 16, marginTop: 4 }}>
+                <div className="ml-4 mt-1">
                   {services.map((s) => (
-                    <Link key={s.name} to={s.path} onClick={() => setMobileOpen(false)} style={{
-                      display: 'flex', alignItems: 'center', gap: 8,
-                      padding: '8px 16px', borderRadius: 10, fontSize: 14,
-                      color: 'var(--color-text-muted)', textDecoration: 'none',
-                    }}>
+                    <Link key={s.name} to={s.path} onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-[var(--color-text-muted)] no-underline"
+                    >
                       <span>{s.icon}</span>{s.name}
                     </Link>
                   ))}
@@ -165,15 +129,10 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <div style={{ paddingTop: 8 }}>
-            <Link to="/contact" onClick={() => setMobileOpen(false)} style={{
-              display: 'block', textAlign: 'center', padding: '10px 20px', borderRadius: 10,
-              fontSize: 14, fontWeight: 600,
-              backgroundColor: 'var(--color-btn-primary-bg)',
-              color: 'var(--color-btn-primary-text)', textDecoration: 'none',
-            }}>
-              Hire Expert
-            </Link>
+          <div className="pt-2">
+            <Button asChild className="w-full">
+              <Link to="/contact" onClick={() => setMobileOpen(false)}>Hire Expert</Link>
+            </Button>
           </div>
         </div>
       )}

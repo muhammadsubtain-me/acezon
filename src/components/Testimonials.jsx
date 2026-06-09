@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { Star } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { Card, CardContent } from './ui/card';
+import { Avatar, AvatarFallback } from './ui/avatar';
 
 const testimonials = [
   {
@@ -22,80 +26,60 @@ export default function Testimonials() {
   const [active, setActive] = useState(0);
 
   return (
-    <section style={{ padding: '80px 0', backgroundColor: 'var(--color-bg)' }}>
+    <section className="py-20 bg-[var(--color-bg)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
-          <span style={{
-            display: 'inline-block', fontSize: 11, fontWeight: 700,
-            textTransform: 'uppercase', letterSpacing: '0.1em',
-            color: 'var(--color-text-muted)',
-            background: 'var(--color-accent-bg)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 100, padding: '6px 16px', marginBottom: 16,
-          }}>Testimonials</span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold" style={{ color: 'var(--color-text-heading)' }}>
+        <div className="text-center mb-14">
+          <Badge className="mb-4">Testimonials</Badge>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[var(--color-text-heading)]">
             What Clients Say
           </h2>
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <div style={{
-            backgroundColor: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 24, padding: '40px 40px',
-            position: 'relative', marginBottom: 32,
-          }}>
-            <div style={{ fontSize: 56, color: 'var(--color-border-hover)', fontWeight: 800, lineHeight: 1, marginBottom: 16 }}>"</div>
-            <p style={{ color: 'var(--color-text)', fontSize: 17, lineHeight: 1.75, marginBottom: 24 }}>
+          <Card className="p-10 mb-8">
+            <div className="text-[56px] text-[var(--color-border-hover)] font-extrabold leading-none mb-4">"</div>
+            <p className="text-[var(--color-text)] text-[17px] leading-[1.75] mb-6">
               {testimonials[active].text}
             </p>
             <div className="flex items-center gap-4">
-              <div style={{
-                width: 48, height: 48, borderRadius: '50%',
-                backgroundColor: 'var(--color-surface-3)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24,
-              }}>
-                {testimonials[active].avatar}
-              </div>
+              <Avatar>
+                <AvatarFallback>{testimonials[active].avatar}</AvatarFallback>
+              </Avatar>
               <div>
-                <div style={{ fontWeight: 600, color: 'var(--color-text-heading)' }}>{testimonials[active].name}</div>
-                <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{testimonials[active].role}</div>
+                <div className="font-semibold text-[var(--color-text-heading)]">{testimonials[active].name}</div>
+                <div className="text-[13px] text-[var(--color-text-muted)]">{testimonials[active].role}</div>
               </div>
-              <div style={{ marginLeft: 'auto', display: 'flex', gap: 2 }}>
+              <div className="ml-auto flex gap-0.5">
                 {Array.from({ length: testimonials[active].rating }).map((_, i) => (
-                  <svg key={i} className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" style={{ color: 'var(--color-star)' }}>
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
+                  <Star key={i} className="w-4 h-4 fill-current text-[var(--color-star)]" />
                 ))}
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Navigation dots */}
           <div className="flex justify-center gap-3">
             {testimonials.map((_, i) => (
-              <button key={i} onClick={() => setActive(i)} style={{
-                border: 'none', cursor: 'pointer', borderRadius: 100,
-                transition: 'all 0.3s',
-                width: i === active ? 32 : 12, height: 12,
-                backgroundColor: i === active ? 'var(--color-accent)' : 'var(--color-border-hover)',
-              }} />
+              <button key={i} onClick={() => setActive(i)}
+                className={`border-none cursor-pointer transition-all duration-300 h-3 ${
+                  i === active
+                    ? 'w-8 bg-[var(--color-accent)]'
+                    : 'w-3 bg-[var(--color-border-hover)]'
+                }`}
+              />
             ))}
           </div>
 
           {/* Thumbnail avatars */}
           <div className="flex justify-center gap-4 mt-6">
             {testimonials.map((t, i) => (
-              <button key={i} onClick={() => setActive(i)} style={{
-                width: 48, height: 48, borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20,
-                border: 'none', cursor: 'pointer', transition: 'all 0.2s',
-                backgroundColor: i === active ? 'var(--color-surface-3)' : 'var(--color-surface)',
-                outline: i === active ? '2px solid var(--color-accent)' : 'none',
-                outlineOffset: 2,
-                transform: i === active ? 'scale(1.1)' : 'scale(1)',
-                opacity: i === active ? 1 : 0.5,
-              }}>
+              <button key={i} onClick={() => setActive(i)}
+                className={`w-12 h-12 flex items-center justify-center text-xl border-none cursor-pointer transition-all duration-200 ${
+                  i === active
+                    ? 'bg-[var(--color-surface-3)] outline outline-2 outline-[var(--color-accent)] outline-offset-2 scale-110 opacity-100'
+                    : 'bg-[var(--color-surface)] scale-100 opacity-50'
+                }`}
+              >
                 {t.avatar}
               </button>
             ))}
