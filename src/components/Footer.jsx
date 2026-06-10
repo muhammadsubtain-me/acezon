@@ -50,15 +50,15 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Domains */}
           <div>
-            <h4 className="font-semibold text-[var(--color-footer-head)] mb-5 text-xs uppercase tracking-[0.08em]">Our Services</h4>
+            <h4 className="font-semibold text-[var(--color-footer-head)] mb-5 text-xs uppercase tracking-[0.08em]">Domains</h4>
             <ul className="list-none p-0 m-0">
               {[
-                { name: 'Mechanical Engineering', path: '/services/mechanical' },
-                { name: 'Electrical Engineering', path: '/services/electrical' },
-                { name: 'Chemical Engineering', path: '/services/chemical' },
-                { name: 'Computer Science', path: '/services/computer-science' },
+                { name: 'Mechanical Engineering', path: '/domains/mechanical' },
+                { name: 'Electrical Engineering', path: '/domains/electrical' },
+                { name: 'Chemical Engineering', path: '/domains/chemical' },
+                { name: 'Computer Science', path: '/domains/computer-science' },
               ].map((s) => (
                 <li key={s.name} className="mb-2.5">
                   <Link to={s.path}

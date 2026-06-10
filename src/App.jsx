@@ -2,10 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PageTransition from './components/PageTransition';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
 import Home from './pages/Home';
 import { AboutPage, SamplesPage, ContactPage, PortfolioPage, FAQsPage } from './pages/OtherPages';
-import { MechanicalPage, ElectricalPage, ChemicalPage, ComputerSciencePage } from './pages/ServicePages';
 import ServicesOverview from './pages/ServicesOverview';
+import DomainPageDetail from './pages/DomainPageDetail';
+import ServicePageDetail from './pages/ServicePageDetail';
 
 export default function App() {
   return (
@@ -18,10 +20,12 @@ export default function App() {
               <Routes location={location}>
                 <Route path="/" element={<Home />} />
                 <Route path="/services" element={<ServicesOverview />} />
-                <Route path="/services/mechanical" element={<MechanicalPage />} />
-                <Route path="/services/electrical" element={<ElectricalPage />} />
-                <Route path="/services/chemical" element={<ChemicalPage />} />
-                <Route path="/services/computer-science" element={<ComputerSciencePage />} />
+                <Route path="/services/mechanical" element={<DomainPageDetail domainId="mechanical" />} />
+                <Route path="/services/electrical" element={<DomainPageDetail domainId="electrical" />} />
+                <Route path="/services/chemical" element={<DomainPageDetail domainId="chemical" />} />
+                <Route path="/services/computer-science" element={<DomainPageDetail domainId="computer-science" />} />
+                <Route path="/services/:serviceId" element={<ServicePageDetail />} />
+                <Route path="/domains/:domainId" element={<DomainPageDetail />} />
                 <Route path="/samples" element={<SamplesPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
@@ -33,6 +37,7 @@ export default function App() {
           </PageTransition>
         </main>
         <Footer />
+        <WhatsAppButton />
       </div>
     </BrowserRouter>
   );

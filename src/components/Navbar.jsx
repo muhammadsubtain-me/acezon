@@ -4,15 +4,22 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 
 const services = [
-  { name: 'Mechanical', path: '/services/mechanical', icon: '⚙️' },
-  { name: 'Electrical', path: '/services/electrical', icon: '⚡' },
-  { name: 'Chemical', path: '/services/chemical', icon: '🧪' },
-  { name: 'Computer Science', path: '/services/computer-science', icon: '💻' },
+  { name: 'Assignment Help', path: '/services/assignment-help', icon: '📋' },
+  { name: 'Dissertation Help', path: '/services/dissertation-help', icon: '🎓' },
+  { name: 'Exam Preparation', path: '/services/exam-prep', icon: '📚' },
+  { name: 'Lab & Projects Help', path: '/services/lab-projects', icon: '🛠️' },
+];
+
+const domains = [
+  { name: 'Mechanical Engineering', path: '/domains/mechanical', icon: '⚙️' },
+  { name: 'Electrical Engineering', path: '/domains/electrical', icon: '⚡' },
+  { name: 'Computer Science', path: '/domains/computer-science', icon: '💻' },
 ];
 
 const navLinks = [
   { name: 'Home', path: '/' },
-  { name: 'Services', path: '/services', hasDropdown: true },
+  { name: 'Services', path: '/services', hasDropdown: true, dropdownType: 'services' },
+  { name: 'Domains', path: '/domains/mechanical', hasDropdown: true, dropdownType: 'domains' },
   { name: 'Samples', path: '/samples' },
   { name: 'About', path: '/about' },
   { name: 'Contact', path: '/contact' },
@@ -21,7 +28,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef(null);
@@ -34,10 +41,20 @@ export default function Navbar() {
   }, []);
 
   // Close mobile menu on route change
-  useEffect(() => { setMobileOpen(false); setDropdownOpen(false); }, [location.pathname]);
+  useEffect(() => { setMobileOpen(false); setActiveDropdown(null); }, [location.pathname]);
 
-  const handleMouseEnter = () => { clearTimeout(timeoutRef.current); setDropdownOpen(true); };
-  const handleMouseLeave = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 150); };
+  const handleMouseEnter = (type) => { clearTimeout(timeoutRef.current); setActiveDropdown(type); };
+  const handleMouseLeave = () => { timeoutRef.current = setTimeout(() => setActiveDropdown(null), 150); };
+
+  const isLinkActive = (link) => {
+    if (link.dropdownType === 'services') {
+      return location.pathname.startsWith('/services') && !location.pathname.startsWith('/services/mechanical') && !location.pathname.startsWith('/services/electrical') && !location.pathname.startsWith('/services/chemical') && !location.pathname.startsWith('/services/computer-science');
+    }
+    if (link.dropdownType === 'domains') {
+      return location.pathname.startsWith('/domains') || location.pathname.startsWith('/services/mechanical') || location.pathname.startsWith('/services/electrical') || location.pathname.startsWith('/services/chemical') || location.pathname.startsWith('/services/computer-science');
+    }
+    return location.pathname === link.path;
+  };
 
   return (
     <header
@@ -65,25 +82,31 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-1 ml-auto">
             {navLinks.map((link) =>
               link.hasDropdown ? (
-                <div key={link.name} className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                  <button className={`flex items-center px-4 py-2 text-sm font-medium border-none cursor-pointer transition-all duration-150 bg-transparent ${
-                    location.pathname.startsWith('/services')
+                <div key={link.name} className="relative"
+                  onMouseEnter={() => handleMouseEnter(link.dropdownType)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <button className={`flex items-center px-4 py-2 text-sm font-medium border-none cursor-pointer transition-all duration-150 bg-transparent gap-1.5 ${
+                    isLinkActive(link)
                       ? 'text-white'
                       : 'text-[var(--color-text-muted)] hover:text-white'
                   }`}>
-                    Services
+                    <span>{link.name}</span>
+                    <ChevronDown className="w-3.5 h-3.5 opacity-60 transition-transform duration-300 group-hover:rotate-180" />
                   </button>
-                  <div className={`absolute top-full left-0 mt-2 w-56 rounded-xl overflow-hidden transition-all duration-200 bg-[rgba(10,10,10,0.75)] backdrop-blur-[20px] backdrop-saturate-[160%] border border-[rgba(255,255,255,0.1)] shadow-[0_16px_48px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] ${
-                    dropdownOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+                  <div className={`absolute top-full left-0 mt-2 w-56 rounded-xl overflow-hidden transition-all duration-200 bg-[rgba(10,10,10,0.85)] backdrop-blur-[20px] backdrop-saturate-[160%] border border-[rgba(255,255,255,0.1)] shadow-[0_16px_48px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] ${
+                    activeDropdown === link.dropdownType
+                      ? 'opacity-100 translate-y-0 pointer-events-auto'
+                      : 'opacity-0 -translate-y-2 pointer-events-none'
                   }`}
                   >
                     <div className="p-2">
-                      {services.map((service) => (
-                        <Link key={service.name} to={service.path} onClick={() => setDropdownOpen(false)}
+                      {(link.dropdownType === 'domains' ? domains : services).map((item) => (
+                        <Link key={item.name} to={item.path} onClick={() => setActiveDropdown(null)}
                           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[var(--color-text)] no-underline transition-all duration-150 hover:bg-white/10 hover:text-white"
                         >
-                          <span>{service.icon}</span>
-                          <span className="font-medium">{service.name}</span>
+                          <span>{item.icon}</span>
+                          <span className="font-medium">{item.name}</span>
                         </Link>
                       ))}
                     </div>
@@ -121,7 +144,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div
-          className="border-t border-white/[0.08] px-4 pb-4 pt-2 bg-[rgba(5,5,5,0.85)] backdrop-blur-[24px] backdrop-saturate-[180%]"
+          className="border-t border-white/[0.08] px-4 pb-4 pt-2 bg-[rgba(5,5,5,0.85)] backdrop-blur-[24px] backdrop-saturate-[180%] max-h-[calc(100vh-4rem)] overflow-y-auto"
         >
           {navLinks.map((link) => (
             <div key={link.name}>
@@ -135,12 +158,13 @@ export default function Navbar() {
                 {link.name}
               </Link>
               {link.hasDropdown && (
-                <div className="ml-4 mt-1">
-                  {services.map((s) => (
+                <div className="ml-4 mt-1 flex flex-col gap-1 border-l border-white/10 pl-3 mb-2">
+                  {(link.dropdownType === 'domains' ? domains : services).map((s) => (
                     <Link key={s.name} to={s.path} onClick={() => setMobileOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-[var(--color-text-muted)] no-underline hover:text-white hover:bg-white/[0.07] transition-all duration-150"
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] no-underline hover:text-white hover:bg-white/[0.07] transition-all duration-150"
                     >
-                      <span>{s.icon}</span>{s.name}
+                      <span>{s.icon}</span>
+                      <span>{s.name}</span>
                     </Link>
                   ))}
                 </div>

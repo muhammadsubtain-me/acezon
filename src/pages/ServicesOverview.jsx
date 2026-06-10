@@ -6,22 +6,22 @@ import { Button } from '../components/ui/button';
 
 const serviceCategories = [
   {
-    title: 'Mechanical Engineering', path: '/services/mechanical', icon: '⚙️',
+    title: 'Mechanical Engineering', path: '/domains/mechanical', icon: '⚙️',
     desc: 'Thermodynamics, fluid mechanics, CAD/CAM, robotics, and more.',
     topics: ['Thermodynamics', 'Fluid Mechanics', 'Robotics', 'Materials Science'],
   },
   {
-    title: 'Electrical Engineering', path: '/services/electrical', icon: '⚡',
+    title: 'Electrical Engineering', path: '/domains/electrical', icon: '⚡',
     desc: 'Circuit analysis, power systems, digital electronics, and signal processing.',
     topics: ['Circuit Analysis', 'Power Systems', 'VLSI Design', 'Embedded Systems'],
   },
   {
-    title: 'Chemical Engineering', path: '/services/chemical', icon: '🧪',
+    title: 'Chemical Engineering', path: '/domains/chemical', icon: '🧪',
     desc: 'Reaction kinetics, process design, mass transfer, and thermodynamics.',
     topics: ['Reaction Kinetics', 'Process Design', 'Mass Transfer', 'Separation Processes'],
   },
   {
-    title: 'Computer Science', path: '/services/computer-science', icon: '💻',
+    title: 'Computer Science', path: '/domains/computer-science', icon: '💻',
     desc: 'Algorithms, machine learning, web development, databases, and AI.',
     topics: ['Data Structures', 'Machine Learning', 'Web Development', 'Cybersecurity'],
   },
