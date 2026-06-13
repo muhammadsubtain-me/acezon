@@ -1,18 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="46" fill="none" viewBox="0 0 48 46">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 48 48">
   <defs>
-    <!-- Linear gradient matching the ZenEdify white/silver branding -->
-    <linearGradient id="zen-edify-grad" x1="24" y1="0" x2="24" y2="46" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="100%" stop-color="#A3A3A3" />
-    </linearGradient>
-    <!-- Subtle drop shadow to make the icon stand out on light/dark browser tabs -->
-    <filter id="subtle-shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.6" />
+    <!-- Subtle shadow for the white squircle to float elegantly -->
+    <filter id="tile-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000000" flood-opacity="0.4" />
     </filter>
   </defs>
+
+  <!-- White Rounded Square Container (App Icon Tile) -->
+  <rect x="2" y="2" width="44" height="44" rx="9" fill="#FFFFFF" filter="url(#tile-shadow)" />
+
+  <!-- Symmetrical, Aligned Circular Zen Swirl (Scaled Up) -->
+  <!-- Left/Upper Swirl (Grey) -->
   <path 
-    fill="url(#zen-edify-grad)" 
-    filter="url(#subtle-shadow)"
-    d="M25.946 44.938c-.664.845-2.021.375-2.021-.698V33.937a2.26 2.26 0 0 0-2.262-2.262H10.287c-.92 0-1.456-1.04-.92-1.788l7.48-10.471c1.07-1.497 0-3.578-1.842-3.578H1.237c-.92 0-1.456-1.04-.92-1.788L10.013.474c.214-.297.556-.474.92-.474h28.894c.92 0 1.456 1.04.92 1.788l-7.48 10.471c-1.07 1.498 0 3.579 1.842 3.579h11.377c.943 0 1.473 1.088.89 1.83L25.947 44.94z"
+    d="M 24,7 A 8.5,8.5 0 0,0 24,24 A 8.5,8.5 0 0,1 24,41 A 17,17 0 0,0 24,7 Z" 
+    fill="#555555" 
+    stroke="#FFFFFF" 
+    stroke-width="1.8" 
+    stroke-linejoin="round"
+  />
+
+  <!-- Right/Lower Swirl (Black) -->
+  <path 
+    d="M 24,41 A 8.5,8.5 0 0,0 24,24 A 8.5,8.5 0 0,1 24,7 A 17,17 0 0,0 24,41 Z" 
+    fill="#000000" 
+    stroke="#FFFFFF" 
+    stroke-width="1.8" 
+    stroke-linejoin="round"
   />
 </svg>

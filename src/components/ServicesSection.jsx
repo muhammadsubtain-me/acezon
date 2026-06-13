@@ -16,7 +16,7 @@ export default function ServicesSection() {
         <div className="text-center mb-14">
           <Badge className="mb-4">What We Offer</Badge>
           <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4 text-[var(--color-text-heading)]">
-            Our Services
+            Our Popular Services
           </h2>
           <p className="text-[var(--color-text-muted)] max-w-[560px] mx-auto text-[17px]">
             From essays to dissertations, coding to lab reports — ZenEdify covers every academic need with expert precision.

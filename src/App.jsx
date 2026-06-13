@@ -10,7 +10,6 @@ import ContactPage from '@/pages/ContactPage';
 import PortfolioPage from '@/pages/PortfolioPage';
 import FAQsPage from '@/pages/FAQsPage';
 import OrderPage from '@/pages/OrderPage';
-import ServicePageDetail from '@/pages/ServicePageDetail';
 import ServicesPage from '@/pages/ServicesPage';
 
 export default function App() {
@@ -25,7 +24,6 @@ export default function App() {
                 <Route path="/" element={<Home />} />
 
                 <Route path="/services" element={<ServicesPage />} />
-                <Route path="/services/:serviceId" element={<ServicePageDetail />} />
                 <Route path="/samples" element={<SamplesPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
