@@ -18,9 +18,9 @@ import {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const TEAM_AVATARS = {
-  Zain:    { initials: 'ZA', color: 'from-violet-500 to-purple-600' },
-  Hasnain: { initials: 'HA', color: 'from-blue-500 to-cyan-600' },
-  Sibtain: { initials: 'SI', color: 'from-emerald-500 to-teal-600' },
+  Zain:    { initials: 'Z', color: 'from-violet-500 to-purple-600', img: '/avatars/zain.jpg' },
+  Hasnain: { initials: 'H', color: 'from-blue-500 to-cyan-600',    img: '/avatars/hasnain.jpg' },
+  Sibtain: { initials: 'S', color: 'from-emerald-500 to-teal-600', img: '/Avatar/Sibtain.jpg' },
 };
 
 const EMAIL_TO_NAME = {
@@ -120,8 +120,20 @@ async function downloadAttachment(url, fileName, setDownloading) {
 
 function MemberAvatar({ name, size = 'md' }) {
   const sz = size === 'sm' ? 'w-7 h-7 text-[10px]' : size === 'lg' ? 'w-12 h-12 text-base' : 'w-9 h-9 text-xs';
+  const avatar = TEAM_AVATARS[name];
+
+  if (avatar?.img) {
+    return (
+      <img
+        src={avatar.img}
+        alt={name}
+        className={`${sz} rounded-xl object-cover shrink-0`}
+      />
+    );
+  }
+
   return (
-    <div className={`${sz} rounded-xl bg-gradient-to-br ${getTeamColor(name)} flex items-center justify-center font-bold text-white shrink-0`}>
+    <div className={`${sz} rounded-xl bg-gradient-to-br ${avatar?.color} flex items-center justify-center font-bold text-white shrink-0`}>
       {getTeamInitials(name)}
     </div>
   );

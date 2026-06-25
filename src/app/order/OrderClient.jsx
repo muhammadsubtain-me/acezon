@@ -104,7 +104,7 @@ const ALLOWED_TYPES = [
   'application/vnd.ms-excel',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-  'text/plain',
+  'text/plain', 'text/csv',
 ];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const MAX_FILES     = 5;
@@ -541,13 +541,13 @@ function OrderForm() {
                 <span className="text-[var(--color-accent)] font-medium">Click to attach</span> or drag &amp; drop files here
               </p>
               <p className="text-xs text-[var(--color-text-faint)]">
-                PDF, DOC, DOCX, PPT, XLS, images — max 10 MB each · up to 5 files
+                 Max 10 MB each · up to 5 files
               </p>
               <input
                 ref={fileInputRef}
                 type="file"
                 multiple
-                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp,.txt"
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.webp,.txt,.csv"
                 className="hidden"
                 onChange={handleFileInput}
               />
