@@ -1,4 +1,12 @@
 User-agent: *
-Allow: /
+Allow: /$
+Allow: /services$
+Allow: /samples$
+Allow: /about$
+Allow: /contact$
+Allow: /faqs$
+Allow: /order$
+Disallow: /admin
+Disallow: /admin/
 
 Sitemap: https://www.acezon.app/sitemap.xml
