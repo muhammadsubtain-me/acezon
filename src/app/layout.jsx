@@ -1,6 +1,5 @@
 import '@fontsource-variable/google-sans-flex';
 import './globals.css';
-import SiteLayout from '@/components/SiteLayout';
 
 export const metadata = {
   title: {
@@ -47,9 +46,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <SiteLayout>{children}</SiteLayout>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
