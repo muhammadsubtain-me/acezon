@@ -9,13 +9,12 @@ import {
   isMessagingSupported,
 } from '@/lib/firebase';
 import { logError } from '@/lib/logger';
-import { hasBeenPromptedForNotifications, markNotificationsPrompted, promptNotificationsIfFirstLogin } from '../lib/fcm';
+import { requestNotificationPermission } from '../lib/fcm';
 
 const VAPID_KEY = process.env.NEXT_PUBLIC_FCM_VAPID_KEY;
 
-// Manages the FCM lifecycle for the admin dashboard: service-worker
-// registration, token persistence, and a one-time notification permission
-// prompt on first login (see LoginGateClient + promptNotificationsIfFirstLogin).
+// Manages the FCM lifecycle for the admin dashboard: service-worker registration,
+// token persistence, and notification permission tied to browser state.
 export function useFcmNotifications(userEmail) {
   const registerToken = useCallback(async () => {
     const supported = await isMessagingSupported();
@@ -49,17 +48,12 @@ export function useFcmNotifications(userEmail) {
         return;
       }
 
-      // Fallback: first visit to /admin while already signed in (no login form).
-      if (Notification.permission === 'default' && !hasBeenPromptedForNotifications(userEmail)) {
-        const result = await promptNotificationsIfFirstLogin(userEmail);
+      // Fallback when landing on /admin already signed in (skipped login form).
+      if (Notification.permission === 'default') {
+        const result = await requestNotificationPermission();
         if (result === 'granted') {
           registerToken().catch((err) => logError('fcm:register', err));
         }
-        return;
-      }
-
-      if (Notification.permission === 'denied' && !hasBeenPromptedForNotifications(userEmail)) {
-        markNotificationsPrompted(userEmail);
       }
     };
 

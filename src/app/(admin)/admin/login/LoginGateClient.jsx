@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
-import { promptNotificationsIfFirstLogin } from '../lib/fcm';
+import { requestNotificationPermission } from '../lib/fcm';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 
 /* ─── Inline Acezon Logo ─────────────────────────────────────────────────── */
@@ -63,9 +63,9 @@ export default function LoginGateClient() {
       setError('Invalid email or password. Please try again.');
       return;
     }
-    // Ask for notification permission once, while the login click is still a
-    // recent user gesture — then land on the dashboard.
-    await promptNotificationsIfFirstLogin(email.trim().toLowerCase());
+    // Show the browser notification dialog when permission is still "default"
+    // (re-shown after revoke/reset). Skipped when already granted or denied.
+    await requestNotificationPermission();
     router.push('/admin');
     router.refresh();
   };

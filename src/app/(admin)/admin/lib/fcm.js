@@ -1,32 +1,15 @@
 // ─── FCM permission helpers ───────────────────────────────────────────────────
-// Tracks whether we've already asked this admin for notification permission on
-// this browser. The browser popup is shown once after first login (or on the
-// first dashboard visit if they were already signed in).
+// Prompting is driven by the browser's Notification.permission state — not a
+// permanent localStorage flag. That way if an admin revokes permission or their
+// token is deleted, the popup can appear again once permission is back to
+// "default". When permission is "denied", the browser blocks the dialog anyway.
 
-function promptKey(email) {
-  return `acezon:fcm-prompted:${email.trim().toLowerCase()}`;
-}
-
-export function hasBeenPromptedForNotifications(email) {
-  if (typeof window === 'undefined' || !email) return true;
-  return localStorage.getItem(promptKey(email)) === '1';
-}
-
-export function markNotificationsPrompted(email) {
-  if (typeof window === 'undefined' || !email) return;
-  localStorage.setItem(promptKey(email), '1');
-}
-
-// Shows the native browser permission dialog when permission is still "default"
-// and we haven't asked this admin on this device before.
-export async function promptNotificationsIfFirstLogin(email) {
-  if (typeof window === 'undefined' || !email) return 'unsupported';
+export async function requestNotificationPermission() {
+  if (typeof window === 'undefined') return 'unsupported';
   if (!('Notification' in window)) return 'unsupported';
-  if (hasBeenPromptedForNotifications(email)) return Notification.permission;
 
-  markNotificationsPrompted(email);
-
-  if (Notification.permission !== 'default') return Notification.permission;
+  if (Notification.permission === 'granted') return 'granted';
+  if (Notification.permission === 'denied') return 'denied';
 
   try {
     return await Notification.requestPermission();
