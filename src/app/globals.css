@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', var(--font-inter), system-ui, sans-serif;
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+
+  --color-surface-lvl0: var(--surface-lvl0);
+  --color-surface-lvl1: var(--surface-lvl1);
+  --color-surface-lvl2: var(--surface-lvl2);
+  --color-surface-lvl3: var(--surface-lvl3);
+  --color-surface-lvl4: var(--surface-lvl4);
+  --color-surface-lvl5: var(--surface-lvl5);
+
+  --color-border-lvl2: var(--border-lvl2);
+  --color-border-lvl3: var(--border-lvl3);
+  --color-border-lvl4: var(--border-lvl4);
+  --color-border-lvl5: var(--border-lvl5);
+
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+
+  --color-status-new-bg: var(--status-new-bg);
+  --color-status-new-text: var(--status-new-text);
+  --color-status-claimed-bg: var(--status-claimed-bg);
+  --color-status-claimed-text: var(--status-claimed-text);
+  --color-status-progress-bg: var(--status-progress-bg);
+  --color-status-progress-text: var(--status-progress-text);
+  --color-status-delivered-bg: var(--status-delivered-bg);
+  --color-status-delivered-text: var(--status-delivered-text);
+  --color-status-completed-bg: var(--status-completed-bg);
+  --color-status-completed-text: var(--status-completed-text);
+  --color-status-rejected-bg: var(--status-rejected-bg);
+  --color-status-rejected-text: var(--status-rejected-text);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Surface Scale */
+  --surface-lvl0: #FAFAFA; /* App/Page Background */
+  --surface-lvl1: #FFFFFF; /* Sections */
+  --surface-lvl2: #FFFFFF; /* Cards */
+  --surface-lvl3: #FFFFFF; /* Inputs / Tables */
+  --surface-lvl4: #FFFFFF; /* Dropdowns / Modals */
+  --surface-lvl5: #FFFFFF; /* Tooltips / Menus */
+
+  /* Borders */
+  --border-lvl2: #E5E7EB;
+  --border-lvl3: #D1D5DB;
+  --border-lvl4: #E5E7EB;
+  --border-lvl5: #E5E7EB;
+
+  /* Brand Blue Colors */
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --primary-light: #EFF6FF;
+
+  --text-main: #0F172A;
+  --text-muted: #475569;
+  --text-subtle: #94A3B8;
+
+  /* Status Colors */
+  --status-new-bg: #EFF6FF;
+  --status-new-text: #1D4ED8;
+  --status-claimed-bg: #FEF3C7;
+  --status-claimed-text: #B45309;
+  --status-progress-bg: #E0F2FE;
+  --status-progress-text: #0369A1;
+  --status-delivered-bg: #F5F3FF;
+  --status-delivered-text: #6D28D9;
+  --status-completed-bg: #ECFDF5;
+  --status-completed-text: #047857;
+  --status-rejected-bg: #FEF2F2;
+  --status-rejected-text: #B91C1C;
+}
+
+body {
+  font-family: 'Inter', var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--surface-lvl0);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Elevation Helpers */
+.surface-lvl0 { background-color: var(--surface-lvl0); }
+.surface-lvl1 { background-color: var(--surface-lvl1); }
+.surface-lvl2 {
+  background-color: var(--surface-lvl2);
+  border: 1px solid var(--border-lvl2);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+.surface-lvl3 {
+  background-color: var(--surface-lvl3);
+  border: 1px solid var(--border-lvl3);
+}
+.surface-lvl4 {
+  background-color: var(--surface-lvl4);
+  border: 1px solid var(--border-lvl4);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+}
+.surface-lvl5 {
+  background-color: var(--surface-lvl5);
+  border: 1px solid var(--border-lvl5);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
