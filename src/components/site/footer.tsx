@@ -28,10 +28,15 @@ export function Footer() {
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-text-subtle mb-4">Services</h4>
             <ul className="space-y-2.5">
-              {['Essay Writing', 'Assignments', 'Proofreading & Editing', 'Custom Assistance'].map((s) => (
-                <li key={s}>
-                  <a href="#services" className="text-sm text-text-muted hover:text-primary transition-colors">
-                    {s}
+              {[
+                { label: 'Essay Writing', href: '#services' },
+                { label: 'Assignments', href: '#services' },
+                { label: 'Proofreading', href: '#services' },
+                { label: 'Dissertations', href: '#services' },
+              ].map((s) => (
+                <li key={s.label}>
+                  <a href={s.href} className="text-sm text-text-muted hover:text-primary transition-colors">
+                    {s.label}
                   </a>
                 </li>
               ))}
@@ -44,9 +49,9 @@ export function Footer() {
             <ul className="space-y-2.5">
               {[
                 { label: 'How it Works', href: '#how-it-works' },
-                { label: 'Why Choose Us', href: '#features' },
+                { label: 'Why Choose Us', href: '/benefits' },
+                { label: 'All Services', href: '/services' },
                 { label: 'Reviews', href: '#testimonials' },
-                { label: 'FAQ', href: '#faq' },
               ].map((l) => (
                 <li key={l.href}>
                   <a href={l.href} className="text-sm text-text-muted hover:text-primary transition-colors">
