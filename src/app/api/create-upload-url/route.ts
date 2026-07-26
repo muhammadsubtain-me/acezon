@@ -4,8 +4,6 @@ import { logError } from '@/shared/logger/logger';
 import { enforceUploadRateLimits, withSessionCookie } from '@/shared/rate-limit/rate-limit';
 import { createSupabaseAdminClient } from '@/shared/supabase/admin';
 
-const supabaseAdmin = createSupabaseAdminClient();
-
 function respond(body: object, init: ResponseInit, sessionId: string, isNew: boolean) {
   return withSessionCookie(NextResponse.json(body, init), sessionId, isNew);
 }
@@ -43,6 +41,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const uploads: { path: string; token: string }[] = [];
+    const supabaseAdmin = createSupabaseAdminClient();
     for (const file of files as FileMetadata[]) {
       const path = buildStoragePath(file.name);
       const { data, error } = await supabaseAdmin.storage

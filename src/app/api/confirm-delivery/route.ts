@@ -3,9 +3,8 @@ import { logError } from '@/shared/logger/logger';
 import { createSupabaseAdminClient } from '@/shared/supabase/admin';
 import { enforceConfirmDeliveryRateLimits } from '@/shared/rate-limit/rate-limit';
 
-const supabase = createSupabaseAdminClient();
-
 export async function POST(request: NextRequest) {
+  const supabase = createSupabaseAdminClient();
   const rateLimited = await enforceConfirmDeliveryRateLimits(request);
   if (rateLimited) return rateLimited;
 

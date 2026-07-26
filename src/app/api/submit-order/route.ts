@@ -6,10 +6,12 @@ import { logError } from '@/shared/logger/logger';
 import { buildSubmitContactKey, enforceSubmitRateLimits } from '@/shared/rate-limit/rate-limit';
 
 // Uses the anon/publishable key intentionally — row-level security handles access.
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-);
+function createAnonClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+  );
+}
 
 function respondFieldErrors(errors: FieldErrors): NextResponse {
   const payload = fieldValidationResponse(errors);
@@ -76,6 +78,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  const supabase = createAnonClient();
   const { error } = await supabase.from('inquiries').insert({
     submitted_at:   new Date().toISOString(),
     phone:          isEmail ? '' : (phone as string).trim(),

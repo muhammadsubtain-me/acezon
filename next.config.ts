@@ -19,7 +19,7 @@ const cspDirectives = [
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
   `connect-src 'self' ${SUPABASE_URL} ${SUPABASE_WSS} https://fcm.googleapis.com https://fcmregistrations.googleapis.com https://firebaseinstallations.googleapis.com https://firebase.googleapis.com https://www.googleapis.com https://*.ingest.sentry.io`.trim(),
-  `img-src 'self' data: blob: https://flagcdn.com ${SUPABASE_URL}`.trim(),
+  `img-src 'self' data: blob: https://flagcdn.com https://images.pexels.com ${SUPABASE_URL}`.trim(),
   "media-src 'self'",
   "object-src 'none'",
   `frame-src 'self' blob: ${SUPABASE_URL}`.trim(),
@@ -90,6 +90,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'flagcdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
       },
     ],
   },
