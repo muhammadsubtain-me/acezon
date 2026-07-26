@@ -2,13 +2,14 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createBrowserClient } from '@supabase/ssr';
 import { GraduationCap, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { createSupabaseBrowserClient } from '@/shared/supabase/browser';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { ThemeToggle } from '@/components/admin/theme-toggle';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -18,10 +19,7 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
-  );
+  const supabase = createSupabaseBrowserClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,13 +55,11 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-surface-lvl0 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
-      {/* Background Decorator Gradients */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+    <main className="min-h-screen w-full bg-surface-lvl0 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 relative">
+      {/* Theme Toggle Positioned in Top-Right */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+        <ThemeToggle />
       </div>
-
       <div className="w-full max-w-md space-y-6 relative z-10">
         {/* Brand Header & Badge */}
         <div className="flex flex-col items-center text-center space-y-3">

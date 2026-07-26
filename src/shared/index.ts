@@ -5,3 +5,4 @@ export * from './sentry/options';
 export * from './supabase/admin';
 export * from './supabase/server';
 export * from './rate-limit/rate-limit';
+export * from './supabase/browser';

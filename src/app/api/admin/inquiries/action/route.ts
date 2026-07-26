@@ -11,10 +11,11 @@ export async function POST(request: NextRequest) {
   }
 
   let body: {
-    action?: 'claim' | 'update_status' | 'update_notes';
+    action?: 'claim' | 'reject' | 'unclaim' | 'reassign' | 'update_status' | 'update_notes';
     inquiry_id?: string;
     status?: string;
     notes?: string;
+    assigned_to?: string;
   };
 
   try {
@@ -53,6 +54,70 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, inquiry: data });
     }
 
+    if (action === 'reject') {
+      const { data, error } = await supabase
+        .from('inquiries')
+        .update({
+          status: 'rejected',
+        })
+        .eq('id', inquiry_id)
+        .select()
+        .single();
+
+      if (error) {
+        logError('admin:action-reject', error);
+        return NextResponse.json({ error: 'Failed to reject inquiry.' }, { status: 500 });
+      }
+
+      return NextResponse.json({ success: true, inquiry: data });
+    }
+
+    if (action === 'unclaim') {
+      const { data, error } = await supabase
+        .from('inquiries')
+        .update({
+          status: 'new',
+          claimed_by: null,
+          claimed_at: null,
+        })
+        .eq('id', inquiry_id)
+        .select()
+        .single();
+
+      if (error) {
+        logError('admin:action-unclaim', error);
+        return NextResponse.json({ error: 'Failed to return inquiry to inbox.' }, { status: 500 });
+      }
+
+      return NextResponse.json({ success: true, inquiry: data });
+    }
+
+    if (action === 'reassign') {
+      const assignedTo = body.assigned_to?.trim();
+      if (!assignedTo) {
+        return NextResponse.json({ error: 'assigned_to is required for reassign action.' }, { status: 400 });
+      }
+
+      const now = new Date().toISOString();
+      const { data, error } = await supabase
+        .from('inquiries')
+        .update({
+          status: 'claimed',
+          claimed_by: assignedTo,
+          claimed_at: now,
+        })
+        .eq('id', inquiry_id)
+        .select()
+        .single();
+
+      if (error) {
+        logError('admin:action-reassign', error);
+        return NextResponse.json({ error: 'Failed to reassign inquiry.' }, { status: 500 });
+      }
+
+      return NextResponse.json({ success: true, inquiry: data });
+    }
+
     if (action === 'update_status') {
       if (!status) {
         return NextResponse.json({ error: 'status is required for update_status action.' }, { status: 400 });
@@ -64,7 +129,7 @@ export async function POST(request: NextRequest) {
       }
 
       const updateData: Record<string, unknown> = { status };
-      if (status === 'in_progress' && !body.status) {
+      if (status === 'in_progress') {
         updateData.claimed_by = adminDisplayName;
         updateData.claimed_at = new Date().toISOString();
       }

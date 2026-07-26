@@ -22,7 +22,7 @@ function toError(error: unknown): Error {
 function reportToSentry(scope: string, error: unknown, meta?: unknown): void {
   if (!sentryEnabled()) return;
 
-  Sentry.withScope((sentryScope: any) => {
+  Sentry.withScope((sentryScope) => {
     sentryScope.setTag('scope', scope);
     if (meta !== undefined) {
       sentryScope.setContext('meta', typeof meta === 'object' && meta !== null ? meta as Record<string, unknown> : { value: meta });

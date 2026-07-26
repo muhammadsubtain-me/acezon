@@ -5,6 +5,7 @@ import { checkEmailAddress, checkWhatsAppNumber } from '@/features/verification'
 import { logError } from '@/shared/logger/logger';
 import { buildSubmitContactKey, enforceSubmitRateLimits } from '@/shared/rate-limit/rate-limit';
 
+// Uses the anon/publishable key intentionally — row-level security handles access.
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!

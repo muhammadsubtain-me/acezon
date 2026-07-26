@@ -1,13 +1,30 @@
+/* ==========================================================================
+   ACEZON GLOBAL STYLESHEET
+   --------------------------------------------------------------------------
+   Contains Tailwind v4 theme configuration, CSS custom properties (tokens),
+   light & dark theme color definitions, base reset, and surface utilities.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. IMPORTS & FONTS
+   -------------------------------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* --------------------------------------------------------------------------
+   2. TAILWIND THEME EXTENSIONS (@theme)
+   Maps CSS custom properties to Tailwind utility classes (e.g., bg-surface-lvl0).
+   -------------------------------------------------------------------------- */
 @theme {
+  /* Typography */
   --font-sans: 'Inter', var(--font-inter), system-ui, sans-serif;
 
+  /* Primary Brand Colors */
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-light: var(--primary-light);
 
+  /* Surface / Elevation Levels */
   --color-surface-lvl0: var(--surface-lvl0);
   --color-surface-lvl1: var(--surface-lvl1);
   --color-surface-lvl2: var(--surface-lvl2);
@@ -15,15 +32,18 @@
   --color-surface-lvl4: var(--surface-lvl4);
   --color-surface-lvl5: var(--surface-lvl5);
 
+  /* Border Levels */
   --color-border-lvl2: var(--border-lvl2);
   --color-border-lvl3: var(--border-lvl3);
   --color-border-lvl4: var(--border-lvl4);
   --color-border-lvl5: var(--border-lvl5);
 
+  /* Typography Text Colors */
   --color-text-main: var(--text-main);
   --color-text-muted: var(--text-muted);
   --color-text-subtle: var(--text-subtle);
 
+  /* Order & Inquiry Status Colors */
   --color-status-new-bg: var(--status-new-bg);
   --color-status-new-text: var(--status-new-text);
   --color-status-claimed-bg: var(--status-claimed-bg);
@@ -38,47 +58,102 @@
   --color-status-rejected-text: var(--status-rejected-text);
 }
 
+/* --------------------------------------------------------------------------
+   3. LIGHT THEME TOKENS (DEFAULT)
+   Active by default on root element (:root) across the site.
+   -------------------------------------------------------------------------- */
 :root {
   color-scheme: light;
 
-  /* Surface Scale */
-  --surface-lvl0: #FAFAFA; /* App/Page Background */
-  --surface-lvl1: #FFFFFF; /* Sections */
-  --surface-lvl2: #FFFFFF; /* Cards */
-  --surface-lvl3: #FFFFFF; /* Inputs / Tables */
-  --surface-lvl4: #FFFFFF; /* Dropdowns / Modals */
-  --surface-lvl5: #FFFFFF; /* Tooltips / Menus */
+  /* Surfaces (Level 0: Page Bg, Level 1: Sidebar/Nav, Level 2-5: Cards & Modals) */
+  --surface-lvl0: #FAFAFA;
+  --surface-lvl1: #FFFFFF;
+  --surface-lvl2: #FFFFFF;
+  --surface-lvl3: #FFFFFF;
+  --surface-lvl4: #FFFFFF;
+  --surface-lvl5: #FFFFFF;
 
   /* Borders */
-  --border-lvl2: #E5E7EB;
-  --border-lvl3: #D1D5DB;
-  --border-lvl4: #E5E7EB;
-  --border-lvl5: #E5E7EB;
+  --border-lvl2: #EAEAEA;
+  --border-lvl3: #D4D4D4;
+  --border-lvl4: #A1A1AA;
+  --border-lvl5: #71717A;
 
-  /* Brand Blue Colors */
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-light: #EFF6FF;
+  /* Primary Brand Blue */
+  --primary: #0070F3;
+  --primary-hover: #0061D5;
+  --primary-light: #EBF6FF;
 
-  --text-main: #0F172A;
-  --text-muted: #475569;
-  --text-subtle: #94A3B8;
+  /* Typography Text Colors */
+  --text-main: #171717;
+  --text-muted: #666666;
+  --text-subtle: #999999;
 
-  /* Status Colors */
-  --status-new-bg: #EFF6FF;
-  --status-new-text: #1D4ED8;
-  --status-claimed-bg: #FEF3C7;
-  --status-claimed-text: #B45309;
-  --status-progress-bg: #E0F2FE;
-  --status-progress-text: #0369A1;
-  --status-delivered-bg: #F5F3FF;
-  --status-delivered-text: #6D28D9;
-  --status-completed-bg: #ECFDF5;
-  --status-completed-text: #047857;
-  --status-rejected-bg: #FEF2F2;
-  --status-rejected-text: #B91C1C;
+  /* Status Badge Tokens */
+  --status-new-bg: #EBF6FF;
+  --status-new-text: #0057C2;
+  --status-claimed-bg: #FFF7E6;
+  --status-claimed-text: #A86A00;
+  --status-progress-bg: #E6F6FF;
+  --status-progress-text: #0479B3;
+  --status-delivered-bg: #F5F0FF;
+  --status-delivered-text: #6B3FB8;
+  --status-completed-bg: #EDFCF2;
+  --status-completed-text: #0A7C3F;
+  --status-rejected-bg: #FFF0F0;
+  --status-rejected-text: #C10000;
 }
 
+/* --------------------------------------------------------------------------
+   4. DARK THEME TOKENS
+   Activated when [data-theme="dark"] attribute is set on <html>.
+   Used for admin routes when toggled into dark mode.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces (Dark Mode Elevations) */
+  --surface-lvl0: #000000;
+  --surface-lvl1: #0A0A0A;
+  --surface-lvl2: #111111;
+  --surface-lvl3: #161616;
+  --surface-lvl4: #1C1C1C;
+  --surface-lvl5: #232323;
+
+  /* Dark Mode Borders */
+  --border-lvl2: #1F1F1F;
+  --border-lvl3: #2A2A2A;
+  --border-lvl4: #333333;
+  --border-lvl5: #444444;
+
+  /* Primary Brand Blue (Dark Variant) */
+  --primary: #0070F3;
+  --primary-hover: #3291FF;
+  --primary-light: #002B5B;
+
+  /* Dark Mode Text Colors */
+  --text-main: #FAFAFA;
+  --text-muted: #A1A1A1;
+  --text-subtle: #666666;
+
+  /* Dark Mode Status Badge Tokens */
+  --status-new-bg: #002B5B;
+  --status-new-text: #69B0FF;
+  --status-claimed-bg: #3A2900;
+  --status-claimed-text: #F5C443;
+  --status-progress-bg: #003A5C;
+  --status-progress-text: #66CFFF;
+  --status-delivered-bg: #2A0F4A;
+  --status-delivered-text: #C9A8FF;
+  --status-completed-bg: #002E15;
+  --status-completed-text: #5BE584;
+  --status-rejected-bg: #3A0A0A;
+  --status-rejected-text: #FF7A7A;
+}
+
+/* --------------------------------------------------------------------------
+   5. GLOBAL BASE STYLES & RESET
+   -------------------------------------------------------------------------- */
 body {
   font-family: 'Inter', var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--surface-lvl0);
@@ -88,26 +163,38 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Elevation Helpers */
-.surface-lvl0 { background-color: var(--surface-lvl0); }
-.surface-lvl1 { background-color: var(--surface-lvl1); }
+/* --------------------------------------------------------------------------
+   6. UTILITY CLASSES & SURFACE ELEVATION STYLES
+   Predefined background, border, and box-shadow treatments.
+   -------------------------------------------------------------------------- */
+.surface-lvl0 {
+  background-color: var(--surface-lvl0);
+}
+
+.surface-lvl1 {
+  background-color: var(--surface-lvl1);
+}
+
 .surface-lvl2 {
   background-color: var(--surface-lvl2);
   border: 1px solid var(--border-lvl2);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
 }
+
 .surface-lvl3 {
   background-color: var(--surface-lvl3);
   border: 1px solid var(--border-lvl3);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
 }
+
 .surface-lvl4 {
   background-color: var(--surface-lvl4);
   border: 1px solid var(--border-lvl4);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.18), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
+
 .surface-lvl5 {
   background-color: var(--surface-lvl5);
   border: 1px solid var(--border-lvl5);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.32), 0 8px 10px -6px rgba(0, 0, 0, 0.18);
 }
-

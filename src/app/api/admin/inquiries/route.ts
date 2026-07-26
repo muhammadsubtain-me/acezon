@@ -56,9 +56,12 @@ export async function GET(request: NextRequest) {
       if (item.status === 'delivered') stats.deliveredCount++;
       if (item.status === 'completed') stats.completedCount++;
 
+      if (item.status !== 'new') {
+        teamCount++;
+      }
+
       const isClaimedOrActive = item.status === 'claimed' || item.status === 'in_progress';
       if (isClaimedOrActive) {
-        teamCount++;
         const itemClaimedBy = (item.claimed_by || '').toLowerCase();
         if (itemClaimedBy && (itemClaimedBy === currentAdminName || itemClaimedBy === currentUserEmail)) {
           myWorkCount++;
@@ -89,7 +92,7 @@ export async function GET(request: NextRequest) {
           return isClaimedOrActive && (itemClaimedBy === currentAdminName || itemClaimedBy === currentUserEmail);
         });
       } else if (statusFilter === 'team') {
-        filtered = filtered.filter((item) => item.status === 'claimed' || item.status === 'in_progress');
+        filtered = filtered.filter((item) => item.status !== 'new');
       } else {
         filtered = filtered.filter((item) => item.status === statusFilter);
       }
@@ -97,12 +100,14 @@ export async function GET(request: NextRequest) {
 
     if (searchQuery) {
       filtered = filtered.filter((item) => {
+        const idMatch = item.id.toLowerCase().includes(searchQuery);
         const contactMatch = item.contact?.toLowerCase().includes(searchQuery);
         const phoneMatch = item.phone?.toLowerCase().includes(searchQuery);
         const serviceMatch = item.service_id?.toLowerCase().includes(searchQuery);
         const customMatch = item.custom_service?.toLowerCase().includes(searchQuery);
         const descMatch = item.description?.toLowerCase().includes(searchQuery);
-        return contactMatch || phoneMatch || serviceMatch || customMatch || descMatch;
+        const claimedByMatch = item.claimed_by?.toLowerCase().includes(searchQuery);
+        return idMatch || contactMatch || phoneMatch || serviceMatch || customMatch || descMatch || claimedByMatch;
       });
     }
 
