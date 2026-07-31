@@ -10,7 +10,6 @@ import { Tooltip } from '@/components/ui/tooltip';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/sonner';
-import { ThemeToggle } from '@/components/admin/theme-toggle';
 import { MetricCards } from '@/components/admin/metric-cards';
 import { FilterBar } from '@/components/admin/filter-bar';
 import { OrdersTable } from '@/components/admin/orders-table';
@@ -307,9 +306,6 @@ export default function AdminDashboardPage() {
               </Avatar>
               <span>Logged in as <strong className="text-text-main font-semibold">{userEmail}</strong></span>
             </div>
-            <Tooltip content="Toggle Light / Dark Mode" side="bottom">
-              <ThemeToggle />
-            </Tooltip>
             <Tooltip content="Sign Out of Dashboard" side="bottom">
               <Button variant="outline" size="sm" onClick={() => setShowLogoutDialog(true)} className="text-xs">
                 <LogOut className="w-3.5 h-3.5 mr-1" />

@@ -2,7 +2,7 @@
    ACEZON GLOBAL STYLESHEET
    --------------------------------------------------------------------------
    Contains Tailwind v4 theme configuration, CSS custom properties (tokens),
-   light & dark theme color definitions, base reset, and surface utilities.
+   light theme color definitions, base reset, and surface utilities.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -59,7 +59,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. LIGHT THEME TOKENS (DEFAULT)
+   3. LIGHT THEME TOKENS
    Active by default on root element (:root) across the site.
    -------------------------------------------------------------------------- */
 :root {
@@ -105,54 +105,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. DARK THEME TOKENS
-   Activated when [data-theme="dark"] attribute is set on <html>.
-   Used for admin routes when toggled into dark mode.
-   -------------------------------------------------------------------------- */
-[data-theme="dark"] {
-  color-scheme: dark;
-
-  /* Surfaces (Dark Mode Elevations) */
-  --surface-lvl0: #000000;
-  --surface-lvl1: #0A0A0A;
-  --surface-lvl2: #111111;
-  --surface-lvl3: #161616;
-  --surface-lvl4: #1C1C1C;
-  --surface-lvl5: #232323;
-
-  /* Dark Mode Borders */
-  --border-lvl2: #1F1F1F;
-  --border-lvl3: #2A2A2A;
-  --border-lvl4: #333333;
-  --border-lvl5: #444444;
-
-  /* Primary Brand Blue (Dark Variant) */
-  --primary: #0070F3;
-  --primary-hover: #3291FF;
-  --primary-light: #002B5B;
-
-  /* Dark Mode Text Colors */
-  --text-main: #FAFAFA;
-  --text-muted: #A1A1A1;
-  --text-subtle: #666666;
-
-  /* Dark Mode Status Badge Tokens */
-  --status-new-bg: #002B5B;
-  --status-new-text: #69B0FF;
-  --status-claimed-bg: #3A2900;
-  --status-claimed-text: #F5C443;
-  --status-progress-bg: #003A5C;
-  --status-progress-text: #66CFFF;
-  --status-delivered-bg: #2A0F4A;
-  --status-delivered-text: #C9A8FF;
-  --status-completed-bg: #002E15;
-  --status-completed-text: #5BE584;
-  --status-rejected-bg: #3A0A0A;
-  --status-rejected-text: #FF7A7A;
-}
-
-/* --------------------------------------------------------------------------
-   5. GLOBAL BASE STYLES & RESET
+   4. GLOBAL BASE STYLES & RESET
    -------------------------------------------------------------------------- */
 body {
   font-family: 'Inter', var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -164,7 +117,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. UTILITY CLASSES & SURFACE ELEVATION STYLES
+   5. UTILITY CLASSES & SURFACE ELEVATION STYLES
    Predefined background, border, and box-shadow treatments.
    -------------------------------------------------------------------------- */
 .surface-lvl0 {

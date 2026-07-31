@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { ThemeToggle } from '@/components/admin/theme-toggle';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -56,10 +55,6 @@ export default function AdminLoginPage() {
 
   return (
     <main className="min-h-screen w-full bg-surface-lvl0 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 relative">
-      {/* Theme Toggle Positioned in Top-Right */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
-        <ThemeToggle />
-      </div>
       <div className="w-full max-w-md space-y-6 relative z-10">
         {/* Brand Header & Badge */}
         <div className="flex flex-col items-center text-center space-y-3">
