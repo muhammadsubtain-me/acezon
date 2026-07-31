@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import { useState, useEffect, type MouseEvent } from 'react';
 import {
-  Check, X, Copy, MessageSquare, Mail, CheckSquare, Square,
+  Check, X, Copy, MessageSquare, Mail,
   Cog, Send,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -11,32 +11,24 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tooltip } from '@/components/ui/tooltip';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Pagination } from '@/components/ui/pagination';
 import type { AdminInquiryRecord } from '@/features/orders/services/admin-orders';
 import { parseDeadlineUrgency } from '@/shared/utils/deadline-urgency';
+import { getStatusBadgeVariant } from '@/components/admin/status-badge';
 
-type StatusBadgeVariant = 'new' | 'claimed' | 'progress' | 'delivered' | 'completed' | 'destructive' | 'outline';
-
-function getStatusBadgeVariant(status: string): StatusBadgeVariant {
-  switch (status) {
-    case 'new': return 'new';
-    case 'claimed': return 'claimed';
-    case 'in_progress': return 'progress';
-    case 'delivered': return 'delivered';
-    case 'completed': return 'completed';
-    case 'rejected': return 'destructive';
-    default: return 'outline';
-  }
-}
+const PAGE_SIZE = 10;
 
 interface OrdersTableProps {
   inquiries: AdminInquiryRecord[];
   loading: boolean;
   statusFilter: string;
+  resetKey: string;
   selectedIds: string[];
   onSelectAll: () => void;
-  onToggleSelect: (e: React.MouseEvent, id: string) => void;
+  onToggleSelect: (e: MouseEvent, id: string) => void;
   onOpenDetail: (inquiry: AdminInquiryRecord) => void;
-  onCopyId: (e: React.MouseEvent, id: string) => void;
+  onCopyId: (e: MouseEvent, id: string) => void;
   onClaim: (id: string) => void;
   onReject: (id: string) => void;
   onStart: (id: string) => void;
@@ -48,6 +40,7 @@ export function OrdersTable({
   inquiries,
   loading,
   statusFilter,
+  resetKey,
   selectedIds,
   onSelectAll,
   onToggleSelect,
@@ -61,6 +54,20 @@ export function OrdersTable({
 }: OrdersTableProps) {
   const hasActionsColumn = statusFilter === 'new' || statusFilter === 'my_work';
   const colSpan = hasActionsColumn ? 8 : 7;
+  const [page, setPage] = useState(1);
+  const pageCount = Math.max(1, Math.ceil(inquiries.length / PAGE_SIZE));
+  const pageStart = (page - 1) * PAGE_SIZE;
+  const visibleInquiries = inquiries.slice(pageStart, pageStart + PAGE_SIZE);
+  const allSelected = inquiries.length > 0 && selectedIds.length === inquiries.length;
+  const someSelected = selectedIds.length > 0 && selectedIds.length < inquiries.length;
+
+  useEffect(() => {
+    setPage(1);
+  }, [resetKey]);
+
+  useEffect(() => {
+    if (page > pageCount) setPage(pageCount);
+  }, [page, pageCount]);
 
   return (
     <Card className="border-border-lvl2 bg-surface-lvl2 overflow-hidden shadow-xs">
@@ -68,17 +75,12 @@ export function OrdersTable({
         <TableHeader>
           <TableRow>
             <TableHead className="w-[40px] text-center">
-              <button
-                type="button"
+              <Checkbox
+                checked={allSelected}
+                indeterminate={someSelected}
                 onClick={onSelectAll}
-                className="text-text-muted hover:text-primary p-1 cursor-pointer"
-              >
-                {selectedIds.length > 0 && selectedIds.length === inquiries.length ? (
-                  <CheckSquare className="w-4 h-4 text-primary" />
-                ) : (
-                  <Square className="w-4 h-4" />
-                )}
-              </button>
+                aria-label={allSelected ? 'Clear selected orders' : 'Select all filtered orders'}
+              />
             </TableHead>
             <TableHead className={`text-center ${hasActionsColumn ? 'w-[15%]' : 'w-[17%]'}`}>Submitted / ID</TableHead>
             <TableHead className={`text-center ${hasActionsColumn ? 'w-[15%]' : 'w-[17%]'}`}>Service</TableHead>
@@ -106,7 +108,7 @@ export function OrdersTable({
               </TableCell>
             </TableRow>
           ) : (
-            inquiries.map((item) => {
+            visibleInquiries.map((item) => {
               const isSelected = selectedIds.includes(item.id);
               const isWhatsApp = item.contact_type === 'whatsapp';
               const urgency = parseDeadlineUrgency(item.deadline);
@@ -125,9 +127,10 @@ export function OrdersTable({
                 >
                   {/* Checkbox */}
                   <TableCell className="text-center" onClick={(e) => onToggleSelect(e, item.id)}>
-                    <button type="button" className="text-text-muted hover:text-primary p-1 cursor-pointer">
-                      {isSelected ? <CheckSquare className="w-4 h-4 text-primary" /> : <Square className="w-4 h-4" />}
-                    </button>
+                    <Checkbox
+                      checked={isSelected}
+                      aria-label={`Select order ${item.id.substring(0, 8)}`}
+                    />
                   </TableCell>
 
                   {/* Date & ID */}
@@ -297,6 +300,14 @@ export function OrdersTable({
           )}
         </TableBody>
       </Table>
+      {!loading && inquiries.length > 0 && (
+        <Pagination
+          page={page}
+          pageCount={pageCount}
+          onPageChange={setPage}
+          totalLabel={`Showing ${pageStart + 1}-${Math.min(pageStart + visibleInquiries.length, inquiries.length)} of ${inquiries.length} orders`}
+        />
+      )}
     </Card>
   );
 }

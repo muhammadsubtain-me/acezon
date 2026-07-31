@@ -11,8 +11,6 @@ export interface SiteInfo {
 
 export interface PaymentMethod {
   name: string;
-  logo: string;
-  imageClass?: string;
 }
 
 export const siteInfo: SiteInfo = {
@@ -28,17 +26,9 @@ export const siteInfo: SiteInfo = {
 };
 
 export const paymentMethods: PaymentMethod[] = [
-  { name: 'Wise', logo: '/images/payment/wise.png' },
-  { name: 'PayPal', logo: '/images/payment/paypal.png' },
-  { name: 'Remitly', logo: '/images/payment/remitly.png' },
-  {
-    name: 'ADIB',
-    logo: '/images/payment/adib.png',
-    imageClass: 'h-9 sm:h-10 md:h-11 w-[112px] sm:w-[124px] md:w-[136px]',
-  },
-  {
-    name: 'Al Rajhi Bank',
-    logo: '/images/payment/al-raji.png',
-    imageClass: 'h-9 sm:h-10 md:h-11 w-[112px] sm:w-[124px] md:w-[136px]',
-  },
+  { name: 'Wise' },
+  { name: 'PayPal' },
+  { name: 'Remitly' },
+  { name: 'ADIB' },
+  { name: 'Al Rajhi Bank' },
 ];

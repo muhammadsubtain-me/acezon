@@ -1,4 +1,3 @@
-import React from 'react';
 import { Star, Quote } from 'lucide-react';
 import { testimonials } from '@/config/site-content';
 

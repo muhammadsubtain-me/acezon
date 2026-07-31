@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowRight, Star, Clock, ShieldCheck } from 'lucide-react';
 
 export function Hero() {

@@ -1,10 +1,10 @@
-import React from 'react';
+import type { ComponentType } from 'react';
 import {
   PenTool, ClipboardList, SpellCheck, Sparkles,
 } from 'lucide-react';
 import { services } from '@/config/site-content';
 
-const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   PenTool, ClipboardList, SpellCheck, Sparkles,
 };
 

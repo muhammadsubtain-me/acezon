@@ -1,14 +1,7 @@
-import React from 'react';
-import {
-  Clock, Inbox, Briefcase, Send, CheckCircle2, Users, Cog, FileText,
-} from 'lucide-react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { SUMMARY_CARDS } from '@/config/queue-config';
+import { QUEUE_ICON_MAP } from '@/config/queue-icons';
 import type { AdminInquiryStats } from '@/features/orders/services/admin-orders';
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  Inbox, Briefcase, Send, CheckCircle2, Users, Clock, Cog, FileText,
-};
 
 interface MetricCardsProps {
   stats: AdminInquiryStats;
@@ -18,7 +11,7 @@ export function MetricCards({ stats }: MetricCardsProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {SUMMARY_CARDS.map((card) => {
-        const Icon = ICON_MAP[card.iconName] || Clock;
+        const Icon = QUEUE_ICON_MAP[card.iconName];
         const count = card.countKey ? (stats[card.countKey] ?? 0) : 0;
         return (
           <Card key={card.id} className="border-border-lvl2 bg-surface-lvl2">

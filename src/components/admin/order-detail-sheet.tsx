@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { Share2, RotateCcw, Paperclip, Download, ShieldAlert } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,29 +8,16 @@ import { Separator } from '@/components/ui/separator';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetBody, SheetFooter } from '@/components/ui/sheet';
 import type { AdminInquiryRecord } from '@/features/orders/services/admin-orders';
-
-type StatusBadgeVariant = 'new' | 'claimed' | 'progress' | 'delivered' | 'completed' | 'destructive' | 'outline';
-
-function getStatusBadgeVariant(status: string): StatusBadgeVariant {
-  switch (status) {
-    case 'new': return 'new';
-    case 'claimed': return 'claimed';
-    case 'in_progress': return 'progress';
-    case 'delivered': return 'delivered';
-    case 'completed': return 'completed';
-    case 'rejected': return 'destructive';
-    default: return 'outline';
-  }
-}
+import { getStatusBadgeVariant } from '@/components/admin/status-badge';
 
 function getPreviousStatus(status: string): string | null {
   switch (status) {
-    case 'claimed': return 'new';
+    case 'claimed':     return 'new';
     case 'in_progress': return 'claimed';
-    case 'delivered': return 'in_progress';
-    case 'completed': return 'delivered';
-    case 'rejected': return 'new';
-    default: return null;
+    case 'delivered':   return 'in_progress';
+    case 'completed':   return 'delivered';
+    case 'rejected':    return 'new';
+    default:            return null;
   }
 }
 

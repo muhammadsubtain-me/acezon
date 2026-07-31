@@ -1,8 +1,8 @@
-import React from 'react';
+import type { ComponentType } from 'react';
 import { Send, Cog, CircleCheck as CheckCircle2 } from 'lucide-react';
 import { steps } from '@/config/site-content';
 
-const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   Send, Cog, CheckCircle2,
 };
 

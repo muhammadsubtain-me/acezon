@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import type { ReactNode } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -13,7 +14,12 @@ export const metadata: Metadata = {
   description: 'Expert academic assistance to help students achieve the grades they deserve. Available 24/7.',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body className={`${inter.className} antialiased selection:bg-blue-500/20 selection:text-blue-700`}>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { OrderForm } from '@/components/site/order-form';
 
 export function OrderSection() {

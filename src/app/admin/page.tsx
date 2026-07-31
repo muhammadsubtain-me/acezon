@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { GraduationCap, LogOut, AlertCircle } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tooltip } from '@/components/ui/tooltip';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
+import { Dialog } from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/sonner';
 import { MetricCards } from '@/components/admin/metric-cards';
 import { FilterBar } from '@/components/admin/filter-bar';
@@ -218,7 +219,7 @@ export default function AdminDashboardPage() {
     );
   };
 
-  const handleToggleSelect = (e: React.MouseEvent, id: string) => {
+  const handleToggleSelect = (e: MouseEvent, id: string) => {
     e.stopPropagation();
     setSelectedIds((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
   };
@@ -269,7 +270,7 @@ export default function AdminDashboardPage() {
   };
 
   // ── Misc Handlers ─────────────────────────────────────────────────────────
-  const handleCopyId = (e: React.MouseEvent, id: string) => {
+  const handleCopyId = (e: MouseEvent, id: string) => {
     e.stopPropagation();
     navigator.clipboard.writeText(id);
     toast({ type: 'info', title: 'ID Copied', description: `Order ID ${id} copied to clipboard.` });
@@ -349,6 +350,7 @@ export default function AdminDashboardPage() {
           inquiries={filteredInquiries}
           loading={loading}
           statusFilter={statusFilter}
+          resetKey={`${statusFilter}|${searchQuery}|${serviceFilter}|${contactFilter}|${urgencyFilter}`}
           selectedIds={selectedIds}
           onSelectAll={handleToggleSelectAll}
           onToggleSelect={handleToggleSelect}
@@ -383,31 +385,54 @@ export default function AdminDashboardPage() {
         />
 
         {/* Reassign Modal */}
-        <AlertDialog
+        <Dialog
           open={!!reassignInquiryId}
-          onOpenChange={(open) => !open && setReassignInquiryId(null)}
-          title="Reassign Order to Team Member"
-          description={
-            <div className="space-y-3 pt-2">
-              <p className="text-xs text-text-muted">Enter the name or email of the team member to reassign this order to:</p>
-              <Input
-                placeholder="e.g. Sarah, Alex, john@acezon.com..."
-                value={reassignAdminInput}
-                onChange={(e) => setReassignAdminInput(e.target.value)}
-                className="text-xs h-10"
-              />
-            </div>
-          }
-          actionText="Reassign Order"
-          cancelText="Cancel"
-          onConfirm={() => {
-            if (reassignInquiryId && reassignAdminInput.trim()) {
-              handleAdminAction('reassign', reassignInquiryId, { assigned_to: reassignAdminInput.trim() });
+          onOpenChange={(open) => {
+            if (!open) {
               setReassignInquiryId(null);
               setReassignAdminInput('');
             }
           }}
-        />
+          title="Reassign Order to Team Member"
+          description="Enter the name or email of the team member to reassign this order to."
+          footer={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setReassignInquiryId(null);
+                  setReassignAdminInput('');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                disabled={!reassignAdminInput.trim()}
+                onClick={() => {
+                  if (reassignInquiryId && reassignAdminInput.trim()) {
+                    handleAdminAction('reassign', reassignInquiryId, { assigned_to: reassignAdminInput.trim() });
+                    setReassignInquiryId(null);
+                    setReassignAdminInput('');
+                  }
+                }}
+              >
+                Reassign Order
+              </Button>
+            </>
+          }
+        >
+          <Input
+            placeholder="e.g. Sarah, Alex, john@acezon.com..."
+            value={reassignAdminInput}
+            onChange={(e) => setReassignAdminInput(e.target.value)}
+            className="text-xs h-10"
+            autoFocus
+          />
+        </Dialog>
 
         {/* Sign Out Confirmation */}
         <AlertDialog

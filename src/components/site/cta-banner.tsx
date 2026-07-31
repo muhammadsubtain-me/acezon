@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowRight, MessageSquare } from 'lucide-react';
 import { siteInfo } from '@/shared/config/site';
 

@@ -1,19 +1,34 @@
 'use client';
 
-import React from 'react';
-import {
-  Inbox, Briefcase, Send, CheckCircle2, Users, Clock, Cog, FileText,
-  Search, Filter, Download,
-} from 'lucide-react';
+import { Search, Filter, Download } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select } from '@/components/ui/select';
 import { ALL_QUEUES } from '@/config/queue-config';
+import { QUEUE_ICON_MAP } from '@/config/queue-icons';
 import type { AdminInquiryStats } from '@/features/orders/services/admin-orders';
 
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  Inbox, Briefcase, Send, CheckCircle2, Users, Clock, Cog, FileText,
-};
+const SERVICE_FILTER_OPTIONS = [
+  { value: 'all',        label: 'All Services' },
+  { value: 'essay',      label: 'Essay' },
+  { value: 'assignment', label: 'Assignment' },
+  { value: 'proofread',  label: 'Proofreading' },
+  { value: 'other',      label: 'Custom / Other' },
+];
+
+const CONTACT_FILTER_OPTIONS = [
+  { value: 'all',       label: 'All Channels' },
+  { value: 'whatsapp',  label: 'WhatsApp' },
+  { value: 'email',     label: 'Email' },
+];
+
+const URGENCY_FILTER_OPTIONS = [
+  { value: 'all',     label: 'All Urgencies' },
+  { value: 'overdue', label: 'Overdue' },
+  { value: 'urgent',  label: 'Urgent (< 24h)' },
+  { value: 'ontrack', label: 'On Track (> 24h)' },
+];
 
 interface FilterBarProps {
   stats: AdminInquiryStats;
@@ -47,7 +62,6 @@ export function FilterBar({
   return (
     <div className="space-y-3">
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        {/* Search Bar */}
         <div className="relative flex-1">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-subtle">
             <Search className="w-4 h-4" />
@@ -61,7 +75,6 @@ export function FilterBar({
           />
         </div>
 
-        {/* Queue Tabs */}
         <Tabs
           value={statusFilter}
           onValueChange={onStatusFilterChange}
@@ -69,7 +82,7 @@ export function FilterBar({
         >
           <TabsList className="flex flex-wrap h-auto gap-1">
             {ALL_QUEUES.map((q) => {
-              const Icon = ICON_MAP[q.iconName] || Inbox;
+              const Icon = QUEUE_ICON_MAP[q.iconName];
               const count = q.countKey ? (stats[q.countKey] ?? 0) : 0;
               return (
                 <TabsTrigger key={q.id} value={q.id} className="flex items-center gap-1.5">
@@ -85,7 +98,6 @@ export function FilterBar({
         </Tabs>
       </div>
 
-      {/* Advanced Filters Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-surface-lvl2/60 border border-border-lvl2 rounded-xl text-xs">
         <div className="flex flex-wrap items-center gap-3">
           <span className="font-bold text-text-subtle flex items-center gap-1 uppercase tracking-wider text-[11px]">
@@ -95,44 +107,35 @@ export function FilterBar({
 
           <div className="flex items-center gap-1.5">
             <span className="text-text-muted text-[11px] font-medium">Service:</span>
-            <select
+            <Select
               value={serviceFilter}
-              onChange={(e) => onServiceFilterChange(e.target.value)}
-              className="bg-surface-lvl1 border border-border-lvl2 text-text-main rounded-md px-2 py-1 text-xs focus:outline-none focus:border-primary"
-            >
-              <option value="all">All Services</option>
-              <option value="essay">Essay</option>
-              <option value="assignment">Assignment</option>
-              <option value="proofread">Proofreading</option>
-              <option value="other">Custom / Other</option>
-            </select>
+              onValueChange={onServiceFilterChange}
+              options={SERVICE_FILTER_OPTIONS}
+              className="h-7 w-36 rounded-md bg-surface-lvl1 py-1 text-xs"
+              aria-label="Filter by service"
+            />
           </div>
 
           <div className="flex items-center gap-1.5">
             <span className="text-text-muted text-[11px] font-medium">Contact:</span>
-            <select
+            <Select
               value={contactFilter}
-              onChange={(e) => onContactFilterChange(e.target.value)}
-              className="bg-surface-lvl1 border border-border-lvl2 text-text-main rounded-md px-2 py-1 text-xs focus:outline-none focus:border-primary"
-            >
-              <option value="all">All Channels</option>
-              <option value="whatsapp">WhatsApp</option>
-              <option value="email">Email</option>
-            </select>
+              onValueChange={onContactFilterChange}
+              options={CONTACT_FILTER_OPTIONS}
+              className="h-7 w-34 rounded-md bg-surface-lvl1 py-1 text-xs"
+              aria-label="Filter by contact channel"
+            />
           </div>
 
           <div className="flex items-center gap-1.5">
             <span className="text-text-muted text-[11px] font-medium">Urgency:</span>
-            <select
+            <Select
               value={urgencyFilter}
-              onChange={(e) => onUrgencyFilterChange(e.target.value)}
-              className="bg-surface-lvl1 border border-border-lvl2 text-text-main rounded-md px-2 py-1 text-xs focus:outline-none focus:border-primary"
-            >
-              <option value="all">All Urgencies</option>
-              <option value="overdue">🔴 Overdue</option>
-              <option value="urgent">🟠 Urgent (&lt; 24h)</option>
-              <option value="ontrack">🟢 On Track (&gt; 24h)</option>
-            </select>
+              onValueChange={onUrgencyFilterChange}
+              options={URGENCY_FILTER_OPTIONS}
+              className="h-7 w-40 rounded-md bg-surface-lvl1 py-1 text-xs"
+              aria-label="Filter by urgency"
+            />
           </div>
         </div>
 

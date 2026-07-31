@@ -1,4 +1,3 @@
-import React from 'react';
 import { GraduationCap, Mail, Phone, MessageSquare, MapPin } from 'lucide-react';
 import { siteInfo, paymentMethods } from '@/shared/config/site';
 

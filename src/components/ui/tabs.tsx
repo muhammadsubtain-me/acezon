@@ -76,27 +76,4 @@ const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
 );
 TabsTrigger.displayName = 'TabsTrigger';
 
-export interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: string;
-}
-
-const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
-  ({ value, className, children, ...props }, ref) => {
-    const { value: selectedValue } = useTabs();
-    if (selectedValue !== value) return null;
-
-    return (
-      <div
-        ref={ref}
-        role="tabpanel"
-        className={cn('mt-4 focus-visible:outline-none', className)}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-TabsContent.displayName = 'TabsContent';
-
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+export { Tabs, TabsList, TabsTrigger };

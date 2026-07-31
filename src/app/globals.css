@@ -6,9 +6,10 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. IMPORTS & FONTS
+   1. TAILWIND IMPORT
+   Font loading is handled by next/font/google in layout.tsx — no extra
+   @import needed here.
    -------------------------------------------------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 /* --------------------------------------------------------------------------
@@ -106,14 +107,13 @@
 
 /* --------------------------------------------------------------------------
    4. GLOBAL BASE STYLES & RESET
+   Font smoothing is applied via Tailwind's `antialiased` class in layout.tsx.
    -------------------------------------------------------------------------- */
 body {
-  font-family: 'Inter', var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--surface-lvl0);
   color: var(--text-main);
   margin: 0;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* --------------------------------------------------------------------------

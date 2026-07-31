@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { GraduationCap, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { createSupabaseBrowserClient } from '@/shared/supabase/browser';
@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
 
   const supabase = createSupabaseBrowserClient();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
 

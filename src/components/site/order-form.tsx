@@ -1,21 +1,22 @@
 'use client';
 
-import React, { useState, useRef, useCallback, useMemo } from 'react';
-import { Send, Upload, X, FileText, Loader as Loader2, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, Mail, MessageSquare, ChevronDown, Calendar } from 'lucide-react';
+import { useState, useRef, useCallback, useMemo, type DragEvent, type FormEvent } from 'react';
+import { Send, Upload, X, FileText, Loader as Loader2, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, Mail, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Select } from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Progress } from '@/components/ui/progress';
 import { createSupabaseBrowserClient } from '@/shared/supabase/browser';
 import { countryCodes } from '@/shared/data/countries';
 import {
   acceptedFileExtensions,
   maxFiles,
-  maxFileSize,
 } from '@/features/orders/config/order.config';
 import { getFileRejection, toAttachmentUploadMessage } from '@/features/orders/validation/order-file-validation';
-import { getClientCountryHints } from '@/features/orders/services/resolve-contact';
 import { INQUIRY_FILES_BUCKET } from '@/features/orders/services/inquiry-attachments';
 import { siteInfo } from '@/shared/config/site';
 import { cn } from '@/lib/utils';
@@ -68,6 +69,10 @@ export function OrderForm() {
 
   const isEmailInput = useMemo(() => contactRaw.includes('@'), [contactRaw]);
   const isOther = serviceId === 'other';
+  const countryOptions = useMemo(
+    () => countryCodes.map((c) => ({ value: c.iso, label: `${c.dial} ${c.name}` })),
+    [],
+  );
 
   const resetForm = useCallback(() => {
     setContactRaw('');
@@ -170,13 +175,13 @@ export function OrderForm() {
     }
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  const handleDrop = useCallback((e: DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     handleFileSelect(e.dataTransfer.files);
   }, [handleFileSelect]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setFieldErrors({});
     setGeneralError(null);
@@ -300,20 +305,14 @@ export function OrderForm() {
             </div>
           ) : (
             <div className="flex gap-2">
-              <div className="relative shrink-0 w-36">
-                <select
+              <div className="shrink-0 w-36">
+                <Select
                   value={countryIso}
-                  onChange={(e) => setCountryIso(e.target.value)}
-                  className="h-10 w-full rounded-lg border border-border-lvl3 bg-surface-lvl3 px-2.5 text-sm text-text-main focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer appearance-none pr-7"
+                  onValueChange={setCountryIso}
+                  options={countryOptions}
+                  className="px-2.5 text-sm"
                   aria-label="Country code"
-                >
-                  {countryCodes.map((c) => (
-                    <option key={c.iso} value={c.iso}>
-                      {c.dial} {c.name}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-text-subtle pointer-events-none" />
+                />
               </div>
               <div className="relative flex-1">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-subtle">
@@ -344,24 +343,14 @@ export function OrderForm() {
         {/* Service */}
         <div className="space-y-2">
           <Label htmlFor="service">Service Type</Label>
-          <div className="relative">
-            <select
-              id="service"
-              value={serviceId}
-              onChange={(e) => setServiceId(e.target.value)}
-              className={cn(
-                'h-10 w-full rounded-lg border bg-surface-lvl3 px-3 text-sm text-text-main focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none pr-9 cursor-pointer',
-                fieldErrors.serviceId ? 'border-red-500' : 'border-border-lvl3 focus:border-primary',
-                !serviceId && 'text-text-subtle',
-              )}
-            >
-              <option value="">Select a service…</option>
-              {SERVICE_OPTIONS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-subtle pointer-events-none" />
-          </div>
+          <Select
+            id="service"
+            value={serviceId}
+            onValueChange={setServiceId}
+            options={SERVICE_OPTIONS}
+            placeholder="Select a service..."
+            error={!!fieldErrors.serviceId}
+          />
           {fieldErrors.serviceId && (
             <p className="text-xs font-semibold text-red-600">{fieldErrors.serviceId}</p>
           )}
@@ -387,20 +376,13 @@ export function OrderForm() {
         {/* Deadline */}
         <div className="space-y-2">
           <Label htmlFor="deadline">Deadline</Label>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-subtle">
-              <Calendar className="w-4 h-4" />
-            </div>
-            <Input
-              id="deadline"
-              type="date"
-              min={todayISO()}
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-              className="pl-10"
-              error={!!fieldErrors.deadline}
-            />
-          </div>
+          <DatePicker
+            id="deadline"
+            min={todayISO()}
+            value={deadline}
+            onValueChange={setDeadline}
+            error={!!fieldErrors.deadline}
+          />
           {fieldErrors.deadline && (
             <p className="text-xs font-semibold text-red-600">{fieldErrors.deadline}</p>
           )}
@@ -451,9 +433,10 @@ export function OrderForm() {
               onChange={(e) => handleFileSelect(e.target.files)}
             />
             {uploading ? (
-              <div className="flex flex-col items-center gap-2 py-2">
+              <div className="flex flex-col items-center gap-3 py-3 px-4 w-full">
                 <Loader2 className="w-6 h-6 text-primary animate-spin" />
-                <p className="text-xs font-semibold text-text-muted">Uploading files…</p>
+                <p className="text-xs font-semibold text-text-muted">Uploading attachment…</p>
+                <Progress value={65} className="w-full max-w-xs h-1.5" />
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2 py-2">

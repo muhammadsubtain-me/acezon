@@ -1,10 +1,10 @@
-import React from 'react';
+import type { ComponentType } from 'react';
 import {
   Clock, GraduationCap, ShieldCheck, Timer, RefreshCw, Lock,
 } from 'lucide-react';
 import { features } from '@/config/site-content';
 
-const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   Clock, GraduationCap, ShieldCheck, Timer, RefreshCw, Lock,
 };
 
